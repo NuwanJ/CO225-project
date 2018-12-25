@@ -8,19 +8,16 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import javax.swing.*;
 
-class ConnectionServer implements Runnable, ActionListener {
+class ConnectionServer implements Runnable, ActionListener, ClientServer {
 
-    private static final int WAIT_NAME = 0;
-    private static final int WAIT_SYMBOL = 1;
-    private static final int ALLOW_BID = 2;
+    String clientName = null;
+    String clientSymbol = null;
 
     private Socket mySocket;
 
     private int currentState;
     private double currentBid;
 
-    private String clientName;
-    private String clientSymbol;
     private Server mainServer;
     private Company currentCompany = null;
 
@@ -90,7 +87,8 @@ class ConnectionServer implements Runnable, ActionListener {
                     case WAIT_SYMBOL:
                         clientSymbol = line.trim();
 
-                        if (stock.isSymbolExists(clientSymbol)) {
+                        if (authSymbol(clientSymbol)) {
+
                             currentCompany = stock.getCompany(clientSymbol);
                             double price = currentCompany.getPrice();
 
@@ -110,19 +108,7 @@ class ConnectionServer implements Runnable, ActionListener {
                     case ALLOW_BID:
                         try {
                             double bidValue = Double.parseDouble(line);
-
-                            if (bidValue > currentCompany.getPrice()) {
-
-                                stock.newBidEntry(clientSymbol, clientName, bidValue);
-                                stock.newHistoryRecord(clientSymbol, bidValue, clientName);
-
-                                mainServer.postMSG(this.clientName + " > " + clientSymbol + " > " + line);
-                                reply = "Your bid, " + bidValue + " is accepted for " + currentCompany.getName() + "\n";
-
-                            } else {
-                                reply = "Your bid is less than current heighest bid, " + currentCompany.getPrice() + " for " + currentCompany.getName();
-                                reply += ". Please try with a higher amount.\n";
-                            }
+                            reply = newBid(bidValue);
 
                         } catch (Exception ex) {
                             reply = "Please enter a valid amount as the bid\n";
@@ -146,6 +132,30 @@ class ConnectionServer implements Runnable, ActionListener {
         } catch (IOException e) {
             System.out.println(e);
         }
+    }
+
+    private String newBid(double bidValue) {
+        String reply;
+
+        if (bidValue > currentCompany.getPrice()) {
+
+            stock.newBidEntry(clientSymbol, clientName, bidValue);
+            stock.newHistoryRecord(clientSymbol, bidValue, clientName);
+
+            mainServer.postMSG(this.clientName + " > " + clientSymbol + " > " + bidValue);
+            reply = "Your bid, " + bidValue + " is accepted for " + currentCompany.getName() + "\n";
+
+        } else {
+            reply = "Your bid is less than current highest bid, " + currentCompany.getPrice() + " for " + currentCompany.getName();
+            reply += ". Please try with a higher amount.\n";
+        }
+
+        return reply;
+
+    }
+
+    public boolean authSymbol(String symbol) {
+        return stock.isSymbolExists(symbol);
     }
 }
 

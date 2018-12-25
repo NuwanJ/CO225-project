@@ -93,7 +93,7 @@ class History {
     }
 }
 
-public class StockDatabase {
+public class StockDatabase implements StockMarket {
 
     //linkedlist to store the history or the data that change
     private static LinkedList<History> history;
@@ -133,7 +133,6 @@ public class StockDatabase {
     }
 
     // Functions for debugging ----------------------------------------------------------------------------------
-
     public void printAllCompanies() {
         //print hashtable
         for (String name : stockMarket.keySet()) {
@@ -151,14 +150,13 @@ public class StockDatabase {
     // Utility Functions ----------------------------------------------------------------------------------------
 
     //update the bid price and bidder if the new_price > current_price in the stockMarket hashtable
-    public boolean newBidEntry(String symbol, String bidBy, double bidVal) {
+    public void newBidEntry(String symbol, String bidBy, double bidVal) {
         Company c = stockMarket.get(symbol);
         c.setPrice(bidVal);
         c.setBidBy(bidBy);
 
         //System.out.println("     " + bidBy);
         stockMarket.replace(symbol, c);
-        return true;
     }
 
     //check whether the symbol is exist in the stockMarket hashtable
@@ -167,10 +165,9 @@ public class StockDatabase {
     }
 
     //add new details to the history linkedList
-    public boolean newHistoryRecord(String symbol, double value, String bidBy) {
+    public void newHistoryRecord(String symbol, double value, String bidBy) {
         history.add(new History(symbol, value, bidBy, new Date()));
         System.out.println("history: " + bidBy + ", " + value + ", " + symbol);
-        return true;
     }
 
     //encapsulation - getCompany method
