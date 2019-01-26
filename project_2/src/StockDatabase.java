@@ -1,4 +1,3 @@
-//import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,7 +8,7 @@ import java.lang.*;
 class Company {
     // The object for store company details
 
-    //encapsulating instance variables cannot access outsude the class
+    // encapsulating instance variables cannot access outside the class
     private String symbol, name, bidBy;
     private double price;
 
@@ -70,7 +69,7 @@ class Company {
 class History {
     // An object for store transaction details
 
-    //encapsulating instance variables cannot access outsude the class
+    //encapsulating instance variables cannot access outside the class
     private String symbol, bidBy;
     private double price;
     private Date time;
@@ -192,7 +191,7 @@ public class StockDatabase implements StockMarket {
 
     public ArrayList<String> getSymbolHistory(String s) {
         ArrayList<String> ls = new ArrayList<String>();
-        // TODO: This shoule implement more
+
         for (int num = 0; num < history.size(); num++) {
             if (history.get(num).getSymbol().equals(s)) {
                 //System.out.println(history.get(num));

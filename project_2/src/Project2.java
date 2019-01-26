@@ -1,11 +1,11 @@
-import java.io.IOException; 
+import java.io.IOException;
 
 public class Project2 {
 
     public static void main(String[] args) throws IOException {
 
-        String filePath = "C:/java/stocks.csv";
-        //String filePath = "stocks.csv";
+        //String filePath = "C:/java/stocks.csv";
+        String filePath = "stocks.csv";
 
         //creating instance of StockDatabase
         StockDatabase stocks = new StockDatabase(filePath);

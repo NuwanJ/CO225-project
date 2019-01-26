@@ -9,26 +9,20 @@ import java.util.Scanner;
 public class Display
         extends JPanel implements ActionListener {
 
-    //JTextArea textArea;
-    //encapsulating instance variables cannot access outsude the class
+    //encapsulating instance variables cannot access outside the class
     private Server server;
     private static StockDatabase stock = null;
-    private static JFrame frame;
 
     private final int screenWidth = 600;
     private final int screenHeight = 400;
     private final int noOfLables = 8;
 
-    //VisualServer vServer;
-    /*public enum compName {
-        FB, VRTU, MSFT, GOOGL, YHOO, XLNX, TSLA, TXN
-    }*/
-
+    // GUI Components
+    private static JFrame frame;
     private JLabel lblStockSelect;
     private JTextArea lblSearchRes;
     private JTextField txtStockSelect;
     private JButton enterButton;
-
     private JLabel[] lblNames = new JLabel[noOfLables];
     private JLabel[] lblValues = new JLabel[noOfLables];
 
@@ -49,7 +43,7 @@ public class Display
 
     public void draw() {
 
-        // Draw the window
+        // Window
         frame = new JFrame("Auction Server");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(this);
@@ -85,23 +79,19 @@ public class Display
 
         // Event Listener : Enter button, onClick
         enterButton.addActionListener(new ActionListener() {
-            //TODO: This should be optimize
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 String symbol = txtStockSelect.getText();
-                //StringBuilder sb = new StringBuilder("Results:\n\n");
+                lblSearchRes.setText("");
 
                 if (stock.isSymbolExists(symbol)) {
                     ArrayList<String> ls = stock.getSymbolHistory(symbol);
 
                     for (int i = 0; i < ls.size(); i++) {
                         //System.out.println(">> " + ls.get(i));
-                        //sb.append(ls.get(i));
-                        //sb.append("\n");
                         lblSearchRes.append(ls.get(i) + "\n");
                     }
-                    //lblSearchRes.setText(sb.toString());
 
                 } else {
                     //System.out.println("The symbol, " + symbol + " is not exists.");

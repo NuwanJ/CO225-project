@@ -5,7 +5,6 @@ import java.util.*;
 
 public class Server {
 
-    //private static LinkedList<String> msgs;
     public static final int BASE_PORT = 2000;
 
     private ServerSocket serverSocket = null;
@@ -21,11 +20,6 @@ public class Server {
             System.out.println(e);
         }
     }
-
-    /*public String getMSG() {
-        //if (!msgs.isEmpty()) return msgs.remove();
-        return null;
-    }*/
 
     public synchronized void postMSG(String str) {
         // I can override and make function synchronized
